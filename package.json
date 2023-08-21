@@ -1,0 +1,30 @@
+{
+  "name": "litter-alert",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "Fabrice Armisen",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx src",
+    "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|json|astro)\""
+  },
+  "dependencies": {
+    "@astrojs/react": "^2.3.2",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "astro": "^2.10.12",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.0.2",
+    "prettier-plugin-astro": "^0.11.1"
+  }
+}
