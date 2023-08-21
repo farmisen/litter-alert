@@ -1,26 +1,24 @@
 ---
 import Layout from "../layouts/Layout.astro"
 
-import Counter from "../components/Counter.jsx"
-const someProps = {
-  count: 0
-}
+import Form from "../components/Form.tsx"
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
-    <Counter {...someProps} client:only >React Counter</Counter>
+    <Form client:only />
   </main>
-</Layout>
 
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-</style>
+  <style>
+    main {
+      margin: auto;
+      padding: 1rem;
+      width: 800px;
+      max-width: calc(100% - 2rem);
+      color: white;
+      background: white;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+  </style>
+</Layout>
