@@ -13,12 +13,15 @@
     "format": "prettier --ignore-path .gitignore --write \"src/**/*.+(ts|tsx|json|astro)\""
   },
   "dependencies": {
+    "@astrojs/node": "^5.3.6",
     "@astrojs/react": "^2.3.2",
     "@astrojs/tailwind": "^4.0.0",
     "@tailwindcss/forms": "^0.5.4",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "astro": "^2.10.12",
+    "google-auth-library": "^8.8.0",
+    "google-spreadsheet": "^4.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.45.4",
