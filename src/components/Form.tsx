@@ -15,10 +15,59 @@ interface FormInput {
   severity: SeverityEnum
 }
 
+// entry.1338056908=https%3A%2F%2Feletiofe.com%2Fwp-content%2Fuploads%2F2023%2F04%2F360867-imgur-just-banned-porn.jpg&entry.868187068=some+description&entry.25578658=some+location&entry.407993447=considerable&dlut=1692641890543&fvv=1&partialResponse=%5Bnull%2Cnull%2C%22-5174751832248013256%22%5D&pageHistory=0&fbzx=-5174751832248013256
+// entry.1338056908=https://eletiofe.com/wp-content/uploads/2023/04/360867-imgur-just-banned-porn.jpg&entry.868187068=some+description&entry.25578658=some+location&entry.407993447=considerable&dlut=1692641890543&fvv=1&partialResponse=[null,null,"-5174751832248013256"]&pageHistory=0&fbzx=-5174751832248013256
+
 const Form = () => {
   const { register, handleSubmit } = useForm<FormInput>()
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<FormInput> = async ({
+    description,
+    location,
+    severity
+  }) => {
+    try {
+      // Get the current date in UTC
+      const now = new Date()
+
+      // Get the Unix timestamp in milliseconds
+      const timestampMilliseconds = now.getTime()
+
+      // Convert it to seconds
+      const timestampSeconds = Math.floor(timestampMilliseconds / 1000)
+
+      const data = {
+        "entry.1338056908":
+          "https://eletiofe.com/wp-content/uploads/2023/04/360867-imgur-just-banned-porn.jpg",
+        "entry.868187068": description,
+        "entry.25578658": location,
+        "entry.407993447": severity,
+        'partialResponse': '[null,null,"-5174751832248013256"]',
+        'pageHistory': '0',
+        'fbzx': '-5174751832248013256',
+        'dlut': timestampSeconds.toString(), // "1692641890543" // Mon Aug 21 2023 18:18:10 GMT+0000
+        'fvv': '1',
+      }
+
+      // const formData = new URLSearchParams(data).toString()
+
+      const formData = 'entry.1338056908=https%3A%2F%2Feletiofe.com%2Fwp-content%2Fuploads%2F2023%2F04%2F360867-imgur-just-banned-porn.jpg&entry.868187068=some+description&entry.25578658=some+location&entry.407993447=considerable&dlut=1692641890543&fvv=1&partialResponse=%5Bnull%2Cnull%2C%22-5174751832248013256%22%5D&pageHistory=0&fbzx=-5174751832248013256'
+
+      await fetch(
+        "https://docs.google.com/forms/d/e/1FAIpQLSdrczGHfFEJa9wWPJdUx90KsSobPo_MFdINcTlkSSn3Vlqr4w/formResponse",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formData,
+          mode: "no-cors"
+        }
+      )
+      console.debug("Submitted successfully")
+    } catch (e) {
+      console.error(e.message)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
