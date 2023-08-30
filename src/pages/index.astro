@@ -1,12 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro"
-
-import Form from "../components/Form.tsx"
+import MainView from "../components/MainView.tsx"
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Litter Alert">
   <main>
-    <Form client:only />
+    <MainView client:only />
   </main>
 
   <style>
