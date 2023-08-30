@@ -1,5 +1,6 @@
-import React from "react"
-import { useForm, SubmitHandler } from "react-hook-form"
+import React, { useState } from "react"
+import { useForm, SubmitHandler, UseFormReset } from "react-hook-form"
+import { XCircleIcon } from "@heroicons/react/20/solid"
 
 enum SeverityEnum {
   MINIMAL = "minimal",
@@ -9,61 +10,28 @@ enum SeverityEnum {
   CRITICAL = "critical"
 }
 
-interface FormInput {
+export interface FormInput {
   description: string
   location: string
   severity: SeverityEnum
 }
 
-// entry.1338056908=https%3A%2F%2Feletiofe.com%2Fwp-content%2Fuploads%2F2023%2F04%2F360867-imgur-just-banned-porn.jpg&entry.868187068=some+description&entry.25578658=some+location&entry.407993447=considerable&dlut=1692641890543&fvv=1&partialResponse=%5Bnull%2Cnull%2C%22-5174751832248013256%22%5D&pageHistory=0&fbzx=-5174751832248013256
-// entry.1338056908=https://eletiofe.com/wp-content/uploads/2023/04/360867-imgur-just-banned-porn.jpg&entry.868187068=some+description&entry.25578658=some+location&entry.407993447=considerable&dlut=1692641890543&fvv=1&partialResponse=[null,null,"-5174751832248013256"]&pageHistory=0&fbzx=-5174751832248013256
+const Form = ({
+  onSubmit
+}: {
+  onSubmit: (
+    reset: UseFormReset<FormInput>,
+    setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
+  ) => SubmitHandler<FormInput>
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-const Form = () => {
-  const { register, handleSubmit } = useForm<FormInput>()
-  const onSubmit: SubmitHandler<FormInput> = async ({
-    description,
-    location,
-    severity
-  }) => {
-    try {
-      // Get the current date in UTC
-      const now = new Date()
+  const { register, handleSubmit, reset } = useForm<FormInput>()
 
-      // Get the Unix timestamp in milliseconds
-      const timestampMilliseconds = now.getTime()
-
-      // Convert it to seconds
-      const timestampSeconds = Math.floor(timestampMilliseconds / 1000)
-
-      const formData = {
-        timestamp: timestampSeconds,
-        description,
-        severity,
-        location,
-        media:
-          "https://eletiofe.com/wp-content/uploads/2023/04/360867-imgur-just-banned-porn.jpg"
-      }
-
-      const response = await fetch("/formResponse", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData),
-        mode: "no-cors"
-      })
-
-      const response_body = await response.json()
-
-      // eslint-disable-next-line no-console
-      console.info("Submitted successfull:", response_body)
-    } catch (e) {
-      console.error(e.message)
-    }
-  }
-
+  // eslint-disable-next-line no-console
+  console.log("errorMessage", errorMessage)
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit(reset, setErrorMessage))}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -131,6 +99,22 @@ const Form = () => {
           </button>
         </div>
       </div>
+
+      {errorMessage && (
+        <div className="rounded-md bg-red-50 p-4 mt-5">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                There was an error with your submission:
+              </h3>
+              <div className="mt-2 text-sm text-red-700">{errorMessage}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   )
 }

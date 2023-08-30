@@ -2,7 +2,6 @@ import { GoogleSpreadsheet } from "google-spreadsheet"
 import { JWT } from "google-auth-library"
 
 import type { APIRoute } from "astro"
-export const prerender = false
 
 export const post: APIRoute = async ({ request }) => {
   try {
