@@ -28,8 +28,6 @@ const Form = ({
 
   const { register, handleSubmit, reset } = useForm<FormInput>()
 
-  // eslint-disable-next-line no-console
-  console.log("errorMessage", errorMessage)
   return (
     <form onSubmit={handleSubmit(onSubmit(reset, setErrorMessage))}>
       <div className="space-y-12">

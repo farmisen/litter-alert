@@ -53,6 +53,9 @@ const onSubmit =
       // reset the form
       reset()
 
+      // clear the error message
+      setErrorMessage(null)
+
       // open the success dialog
       setIsOpen(true)
     } catch (e) {
