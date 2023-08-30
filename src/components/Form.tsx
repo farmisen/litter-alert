@@ -1,6 +1,10 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { useForm, SubmitHandler, UseFormReset } from "react-hook-form"
 import { XCircleIcon } from "@heroicons/react/20/solid"
+import { PhotoIcon } from "@heroicons/react/24/solid"
+import Camera from "react-html5-camera-photo"
+import "react-html5-camera-photo/build/css/index.css"
+import ImagePreview from "./ImagePreview"
 
 enum SeverityEnum {
   MINIMAL = "minimal",
@@ -11,6 +15,7 @@ enum SeverityEnum {
 }
 
 export interface FormInput {
+  photoDataUri: string
   description: string
   location: string
   severity: SeverityEnum
@@ -25,10 +30,27 @@ const Form = ({
   ) => SubmitHandler<FormInput>
 }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [isPhotoView, setIsPhotoView] = useState<boolean>(false)
+  const [photoDataUri, setPhotoDataUri] = useState<string | null>(null)
+  const { register, handleSubmit, reset, setValue } = useForm<FormInput>()
 
-  const { register, handleSubmit, reset } = useForm<FormInput>()
+  const handleTakePhoto = useCallback(
+    (dataUri: string) => {
+      setPhotoDataUri(dataUri)
+      setValue("photoDataUri", dataUri)
+      setIsPhotoView(false)
+    },
+    [setIsPhotoView]
+  )
 
-  return (
+  return isPhotoView ? (
+    <Camera
+      onTakePhoto={(dataUri: string) => {
+        handleTakePhoto(dataUri)
+      }}
+      idealFacingMode="environment"
+    />
+  ) : (
     <form onSubmit={handleSubmit(onSubmit(reset, setErrorMessage))}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
@@ -42,6 +64,30 @@ const Form = ({
             address and reduce litter effectively. Together, we can create a cleaner,
             more beautiful environment.
           </p>
+
+          <div className="col-span-full">
+            <label
+              htmlFor="photo"
+              className="block text-sm font-medium leading-6 text-gray-900">
+              Photo
+            </label>
+            <div className="mt-2 flex items-center gap-x-3">
+              {photoDataUri ? (
+                <ImagePreview dataUri={photoDataUri} />
+              ) : (
+                <PhotoIcon className="h-12 w-12 text-gray-300" aria-hidden="true" />
+              )}
+
+              <button
+                type="button"
+                className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                onClick={() => setIsPhotoView(true)}>
+                Change
+              </button>
+
+              <input type="hidden" {...register("photoDataUri")} />
+            </div>
+          </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-full">

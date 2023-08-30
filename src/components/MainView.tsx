@@ -9,7 +9,7 @@ const onSubmit =
     reset: UseFormReset<FormInput>,
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
   ) =>
-  async ({ description, location, severity }: FormInput) => {
+  async ({ description, location, severity, photoDataUri }: FormInput) => {
     try {
       // Get the current date in UTC
       const now = new Date()
@@ -25,8 +25,7 @@ const onSubmit =
         description,
         severity,
         location,
-        media:
-          "https://eletiofe.com/wp-content/uploads/2023/04/360867-imgur-just-banned-porn.jpg"
+        media: photoDataUri
       }
 
       const response = await fetch("/formResponse", {
